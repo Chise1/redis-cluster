@@ -1,0 +1,131 @@
+version: "3.7"
+networks:
+  redis-network:
+    name: redis-cluster-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/24
+services:
+  redis-cluster:
+    image: redis:6-alpine
+    command: 'redis-cli --cluster create
+    172.18.0.11:7001 172.18.0.12:7002 172.18.0.13:7003 172.18.0.14:7004
+    172.18.0.15:7005 172.18.0.16:7006 172.18.0.17:7007 172.18.0.18:7008
+    --cluster-yes --cluster-replicas 1'
+    networks:
+      - redis-network
+    depends_on:
+      - redis1
+      - redis2
+      - redis3
+      - redis4
+      - redis5
+      - redis6
+      - redis7
+      - redis8
+  redis1:
+    image: redis:6-alpine
+    container_name: redis1
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      redis-network:
+        ipv4_address: 172.18.0.11
+    ports:
+      - "7001:7001"
+    expose:
+      - 7001
+    volumes:
+      - ./redis1.conf:/usr/local/etc/redis/redis.conf
+  redis2:
+    image: redis:6-alpine
+    container_name: redis2
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      redis-network:
+        ipv4_address: 172.18.0.12
+    expose:
+      - 7002
+    ports:
+      - "7002:7002"
+    volumes:
+      - ./redis2.conf:/usr/local/etc/redis/redis.conf
+  redis3:
+    image: redis:6-alpine
+    container_name: redis3
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      redis-network:
+        ipv4_address: 172.18.0.13
+    expose:
+      - 7003
+    ports:
+      - "7003:7003"
+    volumes:
+      - ./redis3.conf:/usr/local/etc/redis/redis.conf
+  redis4:
+    image: redis:6-alpine
+    container_name: redis4
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      redis-network:
+        ipv4_address: 172.18.0.14
+    ports:
+      - "7004:7004"
+    expose:
+      - 7004
+    volumes:
+      - ./redis4.conf:/usr/local/etc/redis/redis.conf
+  redis5:
+    image: redis:6-alpine
+    container_name: redis5
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      redis-network:
+        ipv4_address: 172.18.0.15
+    ports:
+      - "7005:7005"
+    expose:
+      - 7005
+    volumes:
+      - ./redis5.conf:/usr/local/etc/redis/redis.conf
+  redis6:
+    image: redis:6-alpine
+    container_name: redis6
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      redis-network:
+        ipv4_address: 172.18.0.16
+    ports:
+      - "7006:7006"
+    expose:
+      - 7006
+    volumes:
+      - ./redis6.conf:/usr/local/etc/redis/redis.conf
+  redis7:
+    image: redis:6-alpine
+    container_name: redis7
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      redis-network:
+        ipv4_address: 172.18.0.17
+    ports:
+      - "7007:7007"
+    expose:
+      - 7007
+    volumes:
+      - ./redis7.conf:/usr/local/etc/redis/redis.conf
+  redis8:
+    image: redis:6-alpine
+    container_name: redis8
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      redis-network:
+        ipv4_address: 172.18.0.18
+    expose:
+      - 7008
+    volumes:
+      - ./redis8.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "7008:7008"
